@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Group Chat</title>
+</head>
+<body>
+    <h1>Welcome, <%= username %></h1>
+    <form action="/sendMessage" method="post">
+        <label for="message">Message:</label>
+        <input type="text" id="message" name="message" required>
+        <button type="submit">Send</button>
+    </form>
+    <div id="chat">
+        <!-- Messages will be displayed here -->
+    </div>
+    <script>
+        // Fetch and display messages
+        async function fetchMessages() {
+            const response = await fetch('/getMessages');
+            const messages = await response.json();
+            const chatDiv = document.getElementById('chat');
+            chatDiv.innerHTML = messages.map(msg => `<p>${msg}</p>`).join('');
+        }
+
+        // Fetch messages on page load
+        fetchMessages();
+
+        // Poll for new messages every few seconds
+        setInterval(fetchMessages, 5000);
+    </script>
+</body>
+</html>
