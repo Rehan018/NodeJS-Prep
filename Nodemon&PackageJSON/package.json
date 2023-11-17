@@ -4,14 +4,11 @@
   "description": "nodejs complete guide",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js",
-    "start-server": "nodemon app.js"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
   },
   "author": "Rehan Alam",
   "license": "ISC",
-  "config": {
-    "port": 4000
-  },
   "dependencies": {
     "express": "^4.18.2"
   }

@@ -11,6 +11,7 @@ const requestHandler = (req, res) => {
     );
     res.write('</html>');
     return res.end();
+    // res.end();
   }
   
   if (url === '/message' && method === 'POST') {
@@ -25,7 +26,7 @@ const requestHandler = (req, res) => {
       fs.writeFile('message.txt', message, err => {
         res.statusCode = 302;
         res.setHeader('Location', '/');
-        return res.end();
+         res.end();
       });
     });
   }
