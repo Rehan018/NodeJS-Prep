@@ -1,0 +1,137 @@
+Why are we using Express.js?
+Express.js is a popular choice for building web applications and APIs with Node.js due to several reasons:
+
+Simplicity: Express provides a simple and minimalistic framework for building web applications, making it easy for developers to get started.
+Flexibility: Express is flexible and doesn't impose a rigid structure on your application, allowing developers to organize their code as they see fit.
+Middleware: The middleware system in Express allows for the creation of modular, reusable components that can handle various tasks like authentication, logging, and request/response manipulation.
+Routing: Express simplifies the process of defining routes and handling HTTP requests, making it easy to create a structured API or web application.
+Community and Ecosystem: Express has a large and active community, and there is a rich ecosystem of middleware and extensions available, making it easy to extend and customize your application.
+
+
+Install Express.js
+To install Express.js, you can use npm (Node Package Manager) in your terminal or command prompt:
+
+
+
+npm install --save express
+
+
+
+
+
+What are middlewares?
+Middleware functions in Express are functions that have access to the request, response, and the next middleware function in the application's request-response cycle. They can perform tasks such as modifying the request and response objects, ending the request-response cycle, and calling the next middleware function in the stack. Middleware functions are defined using the app.use() method in Express.
+
+
+
+What is next used for?
+next is a function passed to middleware functions in Express. It is used to pass control to the next middleware function in the stack. If next is not called within a middleware function, the request-response cycle is terminated, and no further middleware in the stack is executed.
+
+
+
+What is res.send used for?
+res.send() is an Express method used to send a response to an HTTP request. It automatically sets the appropriate Content-Type header based on the type of the response. It can send various types of responses, including HTML, JSON, and other formats.
+
+
+
+If I do res.send('<h1>Hi My Name is Rehan!</h1>'), what will be the Content-Type header equal to?
+In this case, the Content-Type header will be set to text/html because you are sending HTML content.
+
+
+
+If I do res.send({ key1: value }), what will be the Content-Type header equal to?
+In this case, the Content-Type header will be set to application/json because you are sending a JSON object.
+
+
+
+What does app.listen(3001) do behind the scenes?
+app.listen(3000) binds and listens for connections on the specified port (in this case, port 3000). It is a method used to start the Express application and make it listen for incoming HTTP requests. When a request is received on the specified port, the Express application will handle it according to the defined routes and middleware
+
+
+
+// const http = require('http');
+
+const express=require('express');
+
+const app=express();
+
+// use allow to except middile where function
+
+app.use((req,res,next)=>{
+
+    console.log("middleware");
+
+    next();
+
+});
+
+
+
+app.use((req,res,next)=>{
+
+    console.log("second middleware");
+
+    res.send('<h1>Hi My Name Is Rehan!</h1>')
+
+});
+
+// const server = http.createServer(app);
+
+
+
+app.listen(3001);
+
+//rotes.js
+
+const fs = require('fs');
+
+const requestHandler = (req, res) => {
+  const url = req.url;
+  const method = req.method;
+  if (url === '/') {
+    res.write('<html>');
+    res.write('<head><title>Enter Message</title></head>');
+    res.write(
+      '<body><form action="/message" method="POST"><input type="text" name="message"><button type="submit">Send</button></form></body>'
+    );
+    res.write('</html>');
+    return res.end();
+    // res.end();
+  }
+  
+  if (url === '/message' && method === 'POST') {
+    const body = [];
+    req.on('data', chunk => {
+      console.log(chunk);
+      body.push(chunk);
+    });
+    return req.on('end', () => {
+      const parsedBody = Buffer.concat(body).toString();
+      const message = parsedBody.split('=')[1];
+      fs.writeFile('message.txt', message, err => {
+        res.statusCode = 302;
+        res.setHeader('Location', '/');
+         res.end();
+      });
+    });
+  }
+  res.setHeader('Content-Type', 'text/html');
+  res.write('<html>');
+  res.write('<head><title>My First Page</title><head>');
+  res.write('<body><h1>Hello from my Node.js Server!</h1></body>');
+  res.write('</html>');
+  res.end();
+};
+
+// module.exports = requestHandler;
+
+// module.exports = {
+//     handler: requestHandler,
+//     someText: 'Some hard coded text'
+// };
+
+// module.exports.handler = requestHandler;
+// module.exports.someText = 'Some text';
+
+exports.handler = requestHandler;
+exports.someText = 'Some hard coded text';
