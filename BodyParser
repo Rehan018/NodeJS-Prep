@@ -1,0 +1,122 @@
+body-parser is a middleware for Express.js that parses the body of incoming HTTP requests. 
+When a client sends data to the server, it can be in various formats such as JSON,
+URL-encoded, or multipart form data. body-parser simplifies the process of extracting 
+this data from the request and makes it available in a convenient way for your Express.js application to use.
+
+Here are some common use cases for body-parser:
+
+Parsing Form Data: When a client submits an HTML form on a website,
+the data is typically sent as URL-encoded form data. body-parser can parse this data and make it available in the req.body object.
+
+const bodyParser = require('body-parser');
+
+app.use(bodyParser.urlencoded({ extended: false }));
+
+
+
+2.Parsing JSON Data: Nowadays, many applications send data in JSON format. body-parser can parse JSON data and make it available in the req.body object.
+
+
+
+const bodyParser = require('body-parser');
+
+app.use(bodyParser.json());
+
+
+
+3.Parsing Multipart Data: If your application handles file uploads, body-parser can also parse multipart/form-data, making it easier to work with files that are included in the request.
+
+
+
+
+
+const bodyParser = require('body-parser');
+
+app.use(bodyParser.multipart());
+
+
+By using body-parser, you can abstract away the details of parsing different types of data from the request,
+allowing you to focus on handling the processed data in your routes and controllers. It's important to note
+that starting with Express.js version 4.16.0, the express module includes express.json() and express.urlencoded()
+middleware, making it unnecessary to separately install and configure body-parser for JSON and URL-encoded data
+in the latest versions of Express.
+
+
+
+
+const express = require('express');
+
+const bodyParser = require('body-parser');
+
+const app = express();
+
+
+
+app.use(bodyParser.urlencoded({ extended: false }));
+
+
+
+app.get('/add-product', (req, res, next) => {
+
+    console.log("Displaying add-product form");
+
+    res.send('<form action="/product" method="POST">' +
+
+        '<input type="text" name="title" placeholder="Product Title"><br>' +
+
+        '<input type="text" name="size" placeholder="Product Size"><br>' +
+
+        '<button type="submit">Add Product</button>' +
+
+        '</form>');
+
+});
+
+
+
+app.post('/product', (req, res, next) => {
+
+    const productTitle = req.body.title;
+
+    const productSize = req.body.size;
+
+
+
+    console.log('Product Title:', productTitle);
+
+    console.log('Product Size:', productSize);
+
+
+
+    // You can do further processing or store the data in a database here
+
+
+
+    res.redirect('/');
+
+});
+
+
+
+app.get('/', (req, res, next) => {
+
+    console.log("Displaying home page");
+
+    res.send('<h1>Hi, My Name Is Rehan!</h1>');
+
+});
+
+
+
+app.listen(3001, () => {
+
+    console.log('Server is running on port 3001');
+
+});
+
+
+
+
+
+
+
