@@ -1,0 +1,81 @@
+<!-- views/user/profile.ejs -->
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= pageTitle %></title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #3498db;
+            color: #fff;
+            text-align: center;
+            padding: 1em 0;
+        }
+
+        h1 {
+            color: #3498db;
+        }
+
+        section {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        /* Add more styles as needed */
+
+        footer {
+            background-color: #3498db;
+            color: #fff;
+            text-align: center;
+            padding: 1em 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1><%= pageTitle %></h1>
+    </header>
+    <section>
+        <h2>User Profile</h2>
+        <p>User ID: <%= userId %></p>
+        <label for="name">Name:</label>
+        <p><%= userProfile.name %></p>
+
+        <label for="email">Email:</label>
+        <p><%= userProfile.email %></p>
+
+        <label for="mobile">Mobile:</label>
+        <p><%= userProfile.mobile %></p>
+        <a href="/user/edit-profile">Edit Profile</a>
+    </section>
+    <footer>
+        &copy; 2023 Your App Name
+    </footer>
+</body>
+</html>
