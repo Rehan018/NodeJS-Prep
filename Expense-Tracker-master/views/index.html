@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
+      crossorigin="anonymous"
+    />
+    <style>
+      * {
+        color: #cbcdd1;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+      .del:hover {
+        background-color:#303440;
+        cursor: pointer;
+      }
+      .edit:hover{
+        background-color:#303440;
+        cursor: pointer;;
+      }
+      .del:active {
+        background-color:#3f4350;
+      }
+      .edit:active{
+        background-color:#3f4350;
+
+      }
+      body {
+        background-color: #0c0d16;
+      }
+
+      #outer {
+        margin-top: 20px;
+        width: 100%;
+      }
+      thead th {
+        font-size: 20px;
+      }
+      form {
+        margin: auto;
+        width: 60%;
+        display: flex;
+        justify-content: space-between;
+      }
+      form > input {
+        background-color: #313543;
+        width: 20%;
+        height: 30px;
+        border: none;
+        border-radius: 5px;
+      }
+      form > input::placeholder {
+        color: #cbcdd1;
+        text-align: center;
+      }
+      form > button {
+        cursor: pointer;
+        color: #cbcdd1;
+        border: none;
+        background-color: #313543;
+        width: 20%;
+        border-radius: 5px;
+      }
+      form > select {
+        cursor: pointer;
+        padding-right: 2px;
+        padding-left: 2px;
+        border-radius: 5px;
+        border: none;
+        background-color: #313543;
+        width: 20%;
+        color: #cbcdd1;
+      }
+      h2 {
+        text-align: center;
+        color: #cbcdd1;
+        border: 1px solid #cbcdd1;
+      }
+
+      #main {
+        margin: auto;
+        width: 90%;
+        margin-top: 100px;
+        margin-bottom: 100px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="outer">
+      <form action="/add" method="post">
+        <input type="number" name="id" id="id" style="display: none;" />
+        <input type="number" name="price" id="price" placeholder="Add Price" />
+        <input type="text" name="product" id="Product" placeholder="Product Name" />
+        <input type="text" name="category" id="category" placeholder="Product Category" />
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+    <div id="main">
+      <h2>Your Exprenses</h2>
+      <div id="one">
+        <table id="tone" class="table table-dark table-bordered table-hover">
+          <thead>
+            <tr>
+              <th>Price</th>
+              <th>Product</th>
+              <th>Category</th>
+              <th>Delete</th>
+              <th>Edit</th>
+            </tr>
+          </thead>
+          <tbody class="tbody">
+
+          </tbody >
+        </table>
+      </div>
+      </div>
+    </div>
+  </body>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+  <script >
+    let tbody = document.querySelector("tbody")
+ let input = document.querySelectorAll("input")
+    fetch("http://localhost:8080/get").then((res)=>{
+      return res.json()
+    }).then((res)=>{
+      display(res)
+      console.log(res)
+    })
+    function display(data){
+      let str = "";
+      data.forEach(element => {
+        str+=`<tr>
+             <td style="display:none;">${element.id}</td>
+              <td>${element.price}</td>
+              <td>${element.product}</td>
+              <td>${element.category}</td>
+              <td class="del">Delete</td>
+              <td class="edit">Edit</td></tr>`
+      });
+      tbody.innerHTML = str
+    }
+
+    tbody.addEventListener("click", (e)=>{
+      console.log(e)
+      if(e.target.classList.contains("del")){
+        if(confirm("Are you sure, you want to delete this element?")){
+          let req = e.target.parentElement.children[0].innerText;
+          window.location.href = `http://localhost:8080/delete/${req}`
+        }
+      }else if(e.target.classList.contains("edit")){
+        input[0].value = e.target.parentElement.children[0].innerText;
+        input[1].value = e.target.parentElement.children[1].innerText;
+        input[2].value = e.target.parentElement.children[2].innerText;
+        input[3].value = e.target.parentElement.children[3].innerText;
+        e.target.parentElement.style.display = "none"
+      }
+    })
+  </script>
+</html>
